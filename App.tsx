@@ -1,12 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { QuestionProvider } from './src/hooks';
+import { Dropdown } from './src/screens/Dropdown';
+import { FloatButton } from './src/screens/FloatButton';
+import { List } from './src/screens/List';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <QuestionProvider>
+      <FloatButton />
+    </QuestionProvider>
   );
 }
 
