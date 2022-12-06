@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
         borderRadius: 60,
         backgroundColor: "#fff",
         position: "absolute",
-        top: "70%",
+        top: "20%",
         alignItems: "center",
         justifyContent: "center",
         paddingTop: 10

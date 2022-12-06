@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { firstQuestionData } from "../../database/list";
 import { styles } from "./styles";
 import { useQuestions } from "../../hooks";
-import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { interpolate, SlideOutRight, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 export function List(){
     const { validateFirstQuestion } = useQuestions();
@@ -26,8 +26,8 @@ export function List(){
     function onRemoveItem(id: number){
         const actualList = list;
         const removeItem = actualList.filter(item => item.id !== id);
-
         setList(removeItem);
+       
     };
 
     function handleContinue(listItem : any[]){
@@ -63,7 +63,7 @@ export function List(){
                 <ScrollView style={{width: "100%"}}>
                     {
                         list.map((item) =>
-                            <View style={styles.listItem} key={item.id}>
+                            <Animated.View exiting={SlideOutRight.duration(100)} style={styles.listItem} key={item.id}>
                                 <Text style={styles.label}>
                                     {item.label}
                                 </Text>
@@ -72,7 +72,7 @@ export function List(){
                                 <TouchableOpacity onPress={() => onRemoveItem(item.id)} style={{padding: 5}}>
                                     <MaterialCommunityIcons name="close-thick" size={24} color="#c22a2a" />
                                 </TouchableOpacity>
-                            </View>
+                            </Animated.View>
                         )
                     }
                 </ScrollView>

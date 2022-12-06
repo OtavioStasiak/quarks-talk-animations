@@ -5,6 +5,7 @@ type QuestionContextData = {
     validateFirstQuestion: (list: any[]) => boolean;
     validateSecondQuestion: (pickerItem: string) => boolean;
     validateThirdQuestion: (house: string) => boolean;
+    validateForthQuestion: (name: string) => boolean;
 };
 
 type QuestionProviderProps = {
@@ -30,13 +31,19 @@ function QuestionProvider({ children }: QuestionProviderProps) {
       return isCorrect;
     }, []);
 
+    const validateForthQuestion = useCallback((name: string) => {
+      const isCorrect = name === "Terry";
+      return isCorrect;
+    }, []);
+
 
     return (
         <QuestionContext.Provider 
         value={{
             validateFirstQuestion,
             validateSecondQuestion,
-            validateThirdQuestion
+            validateThirdQuestion,
+            validateForthQuestion
         }}>
           {children}
         </QuestionContext.Provider>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, Text, TouchableOpacity } from "react-native";
+import { View, Image, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import MonicaFrame from "../../../assets/frame.png";
@@ -36,6 +36,41 @@ export function Dropdown(){
         };
         navigate("FloatButton" as never);
     };
+
+    const caretAnimatedValue = useSharedValue(0);
+    const caretAnimation = useAnimatedStyle(() => {
+        return{
+            transform: [
+                {rotateX:`${interpolate(
+                    caretAnimatedValue.value,
+                    [0, 1],
+                    [0, 180]
+                )}deg`}
+            ]
+        }
+    });
+
+    const contentAnimation = useAnimatedStyle(() => {
+        return{
+         marginTop:50,
+         height: interpolate(caretAnimatedValue.value, [0, 1], [0, 200]),
+        }
+    });
+
+
+    function handleOpenSelect(){
+        const caretValue = caretAnimatedValue.value === 0 ? 1 : 0;
+        
+        caretAnimatedValue.value = withTiming(caretValue, {duration: 200});
+        
+    };
+
+    function handleSelectItem(item: string){
+        setSelected(item);
+        caretAnimatedValue.value = withTiming(0, {duration: 200});
+
+    }
+   
     return(
         <View style={styles.container}>
             <TouchableOpacity 
@@ -52,31 +87,41 @@ export function Dropdown(){
              Qual é o sabor de pizza favorita de Joey?
             </Text>
 
-            <TouchableOpacity 
+
+          
+                <Animated.View style={[styles.pickerContent, contentAnimation]}>
+                    <ScrollView style={{paddingTop: 10}} showsVerticalScrollIndicator={false}>
+                    {
+                        secondQuestionData.map((item) =>
+                            <TouchableOpacity 
+                            key={item.id}
+                            onPress={() => {
+                                handleSelectItem(item.label)
+                            }} 
+                            style={styles.pickerItem}
+                            >
+                                <Text style={styles.buttonText}>
+                                {item.label}
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                    </ScrollView>
+                </Animated.View>
+            
+
+                <TouchableOpacity 
+             onPress={handleOpenSelect}
              activeOpacity={.8}
              style={styles.picker}
             >
                 <Text style={{color: "#5a189a", fontWeight: "bold"}}>
                 {selected}
                 </Text>
-
-                <AntDesign name="caretdown" size={18} color="#5a189a" />
+                <Animated.View style={caretAnimation}>
+                    <AntDesign name="caretdown" size={18} color="#5a189a" />
+                </Animated.View>
             </TouchableOpacity>
-            <View style={styles.pickerContent}>
-                {
-                    secondQuestionData.map((item) =>
-                        <TouchableOpacity 
-                         key={item.id}
-                         onPress={() => setSelected(item.label)} 
-                         style={styles.pickerItem}
-                        >
-                            <Text style={styles.buttonText}>
-                             {item.label}
-                            </Text>
-                        </TouchableOpacity>
-                    )
-                }
-            </View>
 
             <TouchableOpacity onPress={handleContinue} activeOpacity={.8} style={{width: "100%", marginLeft: 20}}>
                 <Animated.View style={[styles.button, buttonAnimation]}>

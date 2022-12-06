@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#ffd60a",
-        marginTop: "15%",
+        marginTop: "5%",
         elevation: 5,
         borderRadius: 3
     },
@@ -43,7 +43,9 @@ export const styles = StyleSheet.create({
         borderColor: "#5a189a",
         borderRadius: 10,
         marginTop: 20,
-        backgroundColor: "#ffd60a"
+        backgroundColor: "#ffd60a",
+        position: "absolute",
+        top: "60%"
     },
     pickerContent: {
         width: "95%",
