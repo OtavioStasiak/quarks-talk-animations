@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-
+import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import MonicaFrame from "../../../assets/frame.png";
 
@@ -11,6 +11,7 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } f
 
 export function Dropdown(){
     const { validateSecondQuestion } = useQuestions();
+    const { navigate } = useNavigation();
 
     const [opened, setOpened] = useState(true);
     const [ selected, setSelected ] = useState("Selecionar");
@@ -30,9 +31,10 @@ export function Dropdown(){
         const validate = validateSecondQuestion(selected);
         
         if(!validate){
-            animatedValue.value = withTiming(value, {duration: 200})
+            animatedValue.value = withTiming(value, {duration: 200});
+            return;
         };
-        
+        navigate("FloatButton" as never);
     };
     return(
         <View style={styles.container}>

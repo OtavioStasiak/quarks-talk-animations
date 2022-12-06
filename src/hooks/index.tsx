@@ -4,6 +4,7 @@ import React, {useState, useEffect, createContext, useContext, useCallback,} fro
 type QuestionContextData = {
     validateFirstQuestion: (list: any[]) => boolean;
     validateSecondQuestion: (pickerItem: string) => boolean;
+    validateThirdQuestion: (house: string) => boolean;
 };
 
 type QuestionProviderProps = {
@@ -22,14 +23,20 @@ function QuestionProvider({ children }: QuestionProviderProps) {
     const validateSecondQuestion = useCallback((pickerItem: string) => {
       const isCorrect = pickerItem === "Duas Pizzas";
       return isCorrect;
-  }, []);
+    }, []);
+
+    const validateThirdQuestion = useCallback((house: string) => {
+      const isCorrect = house === "slytherin";
+      return isCorrect;
+    }, []);
 
 
     return (
         <QuestionContext.Provider 
         value={{
             validateFirstQuestion,
-            validateSecondQuestion
+            validateSecondQuestion,
+            validateThirdQuestion
         }}>
           {children}
         </QuestionContext.Provider>

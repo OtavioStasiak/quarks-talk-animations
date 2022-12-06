@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
-
+import { useNavigation } from '@react-navigation/native';
 import { firstQuestionData } from "../../database/list";
 import { styles } from "./styles";
 import { useQuestions } from "../../hooks";
@@ -10,6 +10,7 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } f
 
 export function List(){
     const { validateFirstQuestion } = useQuestions();
+    const { navigate } = useNavigation();
     const [list, setList] = useState(firstQuestionData);
 
     const animatedValue = useSharedValue(0);
@@ -33,9 +34,10 @@ export function List(){
         const value = animatedValue.value === 0 ? 2 : 0;
         const validate = validateFirstQuestion(listItem);
         if(!validate){
-            animatedValue.value = withTiming(value, {duration: 200})
+            animatedValue.value = withTiming(value, {duration: 200});
+            return;
         };
-        
+        navigate("Dropdown" as never);
     };
 
     return(
