@@ -113,19 +113,19 @@ export function FloatButton(){
    })
 
     const onGestureEvent = useAnimatedGestureHandler(
-    {
-        onStart(){
-            
-        },
-        onActive(event){
-            translateY.value = event.translationY;
-            translateX.value = event.translationX;
-        },
-        onEnd(){
-            translateX.value = withSpring(0);
-            translateY.value = withSpring(0);
+        {
+            onStart(){
+                
+            },
+            onActive(event){
+                translateY.value = event.translationY;
+                translateX.value = event.translationX;
+            },
+            onEnd(){
+                translateX.value = withSpring(0);
+                translateY.value = withSpring(0);
+            }
         }
-    }
 
     )
 
