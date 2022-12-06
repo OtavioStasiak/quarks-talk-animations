@@ -14,5 +14,17 @@ export const styles = StyleSheet.create({
         height: "50%",
         width: "100%",
         marginTop: -63
+    },
+    option: {
+        width: "90%",
+        borderBottomWidth: 2,
+        borderBottomColor: "#c22a2a",
+        paddingVertical: 10,
+        alignItems: "flex-start"
+    },
+    optionTitle: {
+        color: "#c22a2a",
+        fontWeight: "bold",
+        fontSize: 17
     }
 })
