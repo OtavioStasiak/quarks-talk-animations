@@ -4,6 +4,7 @@ import { List } from "../screens/List";
 import { Dropdown } from "../screens/Dropdown";
 import { FloatButton } from "../screens/FloatButton";
 import { BottomSheet } from "../screens/BottomSheet";
+import { Congratulations } from "../screens/Congratulations";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +15,7 @@ export function StartRoutes(){
             <Stack.Screen name="Dropdown" component={Dropdown} />
             <Stack.Screen name="FloatButton" component={FloatButton} />
             <Stack.Screen name="BottomSheet" component={BottomSheet} />
-
+            <Stack.Screen name="Congratulations" component={Congratulations} />
         </Stack.Navigator>
     )
 }

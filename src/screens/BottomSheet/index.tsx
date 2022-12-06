@@ -9,6 +9,7 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withRepeat, wi
 import { forthQuestionData } from "../../database/list";
 import { useQuestions } from "../../hooks";
 import { Audio } from "expo-av";
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -16,6 +17,7 @@ export function BottomSheet(){
     const { validateForthQuestion } = useQuestions();
     const animatedValue = useSharedValue(0);
     const [opened, setOpened] = useState(false);
+    const {navigate} = useNavigation();
 
     const sound = React.useRef(new Audio.Sound());
 
@@ -40,7 +42,9 @@ export function BottomSheet(){
         if(validate){
             setOpened(true);
             animatedValue.value = withTiming(1);   
-            
+            setTimeout(() => {
+                navigate("Congratulations" as never);
+            }, 5000)
             return;
         };
         const value = vecnaValue.value === 1 ? 0 : 1;
