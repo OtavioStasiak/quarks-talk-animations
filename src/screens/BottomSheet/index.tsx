@@ -9,6 +9,7 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withRepeat, wi
 import { forthQuestionData } from "../../database/list";
 import { useQuestions } from "../../hooks";
 import { Audio } from "expo-av";
+import { StatusBar } from "expo-status-bar";
 
 
 
@@ -78,6 +79,7 @@ export function BottomSheet(){
 
     return(
         <View style={styles.container}>
+            <StatusBar style="light" />
             <Animated.Image 
              source={Vecna} 
              style={[{width:390, height: 378, marginBottom: 1, position: "absolute"}, vecnaStyle]} 
