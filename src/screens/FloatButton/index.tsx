@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import Animated, { cancelAnimation, interpolate, useAnimatedStyle, useSharedValue, withRepeat, withTiming,  } from "react-native-reanimated";
+import Animated, { cancelAnimation, interpolate, useAnimatedStyle, useSharedValue, withRepeat, withSpring, withTiming,  } from "react-native-reanimated";
 import Hogwarts from "../../../assets/hogwarts.png";
 import Slytherin from "../../../assets/sonserina.png";
 import Ravenclaw from "../../../assets/corvinal.png";
@@ -9,7 +9,7 @@ import Gryffindor from "../../../assets/grifnoria.png";
 import LottieView from 'lottie-react-native';
 
 import { styles } from "./styles";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQuestions } from "../../hooks";
 
 
@@ -51,7 +51,13 @@ export function FloatButton(){
     const balanceValue = useSharedValue(0);
     const balanceAnimation = useAnimatedStyle(() => {
         return{
-            top: interpolate(balanceValue.value, [0, 1], [-25, 25])
+            transform: [
+                {rotateZ: `${interpolate(
+                    balanceValue.value,
+                    [0, .3, .6, 1],
+                    [0, 45, -45, 0]
+                )}deg`}
+            ]
         }
     });
 
@@ -67,27 +73,30 @@ export function FloatButton(){
             return;
         };
 
+        const value = balanceValue.value === 1 ? 0 : 1;
+
+        balanceValue.value = withSpring(value);
+
         
     };
 
 
     function openOptions(){
         const value = slytherinValue.value === 1 ? 0 : 1;
-        const balance = balanceValue.value > 0 ?  1 : 0;
+
 
         slytherinValue.value = withTiming(value, {duration: 200});
-        balanceValue.value = withRepeat(withTiming(1, {duration: 650}), 200, true); 
 
-        if(balance === 0){
-            balanceValue.value = withTiming(0);
-
-            setTimeout(() => {
-                cancelAnimation(balanceValue);                
-            }, 50);
-            return;
-        };
-        
     };
+
+    useFocusEffect(useCallback(() => {
+        slytherinValue.value = withSpring(1);
+        setTimeout(() => {
+            slytherinValue.value = withSpring(0);
+            
+        }, 200);
+    }, []))
+
 
 
     return(
