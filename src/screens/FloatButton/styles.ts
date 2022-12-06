@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         backgroundColor: "#372e29",
-        paddingTop: "20%"
+        paddingTop: "20%",
     },
     question: {
         fontWeight: "bold",
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
         borderRadius: 60,
         backgroundColor: "#fff",
         position: "absolute",
-        top: "20%",
+        top: "27%",
         alignItems: "center",
         justifyContent: "center",
         paddingTop: 10

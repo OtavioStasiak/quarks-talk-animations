@@ -11,9 +11,9 @@ export const firstQuestionData = [
 
 export const secondQuestionData = [
     {id: 1, label: "Calabresa"},
-    {id: 2, label: "Quatro Queijos"},
-    {id: 3, label: "Duas Pizzas"},
+    {id: 2, label: "Quatro Pizzas"},
     {id: 4, label: "Peperoni"},
+    {id: 3, label: "Duas Pizzas"},
     {id: 5, label: "Chocolate"},
 
 ];

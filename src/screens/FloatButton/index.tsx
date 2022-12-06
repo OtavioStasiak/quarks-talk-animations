@@ -1,6 +1,6 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import Animated, { cancelAnimation, interpolate, useAnimatedStyle, useSharedValue, withRepeat, withSpring, withTiming,  } from "react-native-reanimated";
+import Animated, { cancelAnimation, interpolate, useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withRepeat, withSpring, withTiming,  } from "react-native-reanimated";
 import Hogwarts from "../../../assets/hogwarts.png";
 import Slytherin from "../../../assets/sonserina.png";
 import Ravenclaw from "../../../assets/corvinal.png";
@@ -11,6 +11,7 @@ import LottieView from 'lottie-react-native';
 import { styles } from "./styles";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQuestions } from "../../hooks";
+import { PanGestureHandler } from "react-native-gesture-handler";
 
 
 export function FloatButton(){
@@ -37,14 +38,14 @@ export function FloatButton(){
     const ravenclawAnimation = useAnimatedStyle(() => {
         return{
             left: interpolate(slytherinValue.value, [0, 1], [0, 85]),
-            top: interpolate(slytherinValue.value, [0, 1], [-110, 10])
+            top: interpolate(slytherinValue.value, [0, 1], [-110, -15])
         }
     });
 
     const hufflepuffAnimation = useAnimatedStyle(() => {
         return{
             left: interpolate(slytherinValue.value, [0, 1], [0, -80]),
-            top: interpolate(slytherinValue.value, [0, 1], [-110, 10])
+            top: interpolate(slytherinValue.value, [0, 1], [-110, -15])
         }
     });
 
@@ -81,6 +82,7 @@ export function FloatButton(){
     };
 
 
+
     function openOptions(){
         const value = slytherinValue.value === 1 ? 0 : 1;
 
@@ -95,8 +97,37 @@ export function FloatButton(){
             slytherinValue.value = withSpring(0);
             
         }, 200);
-    }, []))
+    }, []));
 
+
+   const translateX = useSharedValue(0);
+   const translateY = useSharedValue(0);
+
+   const gestureStyle = useAnimatedStyle(() => {
+    return{
+        transform: [
+            {translateX: translateX.value},
+            {translateY: translateY.value}
+        ]
+    }
+   })
+
+    const onGestureEvent = useAnimatedGestureHandler(
+    {
+        onStart(){
+            
+        },
+        onActive(event){
+            translateY.value = event.translationY;
+            translateX.value = event.translationX;
+        },
+        onEnd(){
+            translateX.value = withSpring(0);
+            translateY.value = withSpring(0);
+        }
+    }
+
+    )
 
 
     return(
@@ -117,53 +148,57 @@ export function FloatButton(){
                 Qual a Melhor Casa de Hogwarts?
             </Text>
             
-            <Animated.View style={[styles.slytherin, slytherinAnimation, balanceAnimation]}>
-                <TouchableOpacity onPress={() => onConfirm("slytherin")}>
-                <Image 
-                 source={Slytherin} 
-                 style={{width: 100,height: 100}} 
-                />
-                </TouchableOpacity>
-            </Animated.View>
+            <PanGestureHandler onGestureEvent={onGestureEvent}>
+            <Animated.View style={gestureStyle}>
 
-            <Animated.View style={[styles.gryffindor, gryffindorAnimation, balanceAnimation]}>
-                <TouchableOpacity onPress={() => onConfirm("gryffindor")}>
+                <Animated.View style={[styles.slytherin, slytherinAnimation, balanceAnimation]}>
+                    <TouchableOpacity onPress={() => onConfirm("slytherin")}>
                     <Image 
-                    resizeMode="contain"  
-                    source={Gryffindor} 
+                    source={Slytherin} 
                     style={{width: 100,height: 100}} 
                     />
-                </TouchableOpacity>
-            </Animated.View> 
+                    </TouchableOpacity>
+                </Animated.View>
 
-            <Animated.View style={[styles.ravenclaw, ravenclawAnimation, balanceAnimation]}>
-                <TouchableOpacity onPress={() => onConfirm("ravenclaw")}>
-                    <Image 
-                    resizeMode="contain" 
-                    source={Ravenclaw} 
-                    style={{width: 100,height: 100}} 
-                    />
-                </TouchableOpacity>
-            </Animated.View>
+                <Animated.View style={[styles.gryffindor, gryffindorAnimation, balanceAnimation,]}>
+                    <TouchableOpacity onPress={() => onConfirm("gryffindor")}>
+                        <Image 
+                        resizeMode="contain"  
+                        source={Gryffindor} 
+                        style={{width: 100,height: 100}} 
+                        />
+                    </TouchableOpacity>
+                </Animated.View> 
 
-            <Animated.View style={[styles.hufflepuff, hufflepuffAnimation, balanceAnimation]}>
-                <TouchableOpacity onPress={() => onConfirm("Hufflepuff")}>
-                    <Image 
-                    resizeMode="contain" 
-                    source={Hufflepuff} 
-                    style={{width: 100,height: 100}} 
-                    />
-                </TouchableOpacity>
-            </Animated.View>
-        
-            <TouchableOpacity activeOpacity={1} onPress={openOptions} style={styles.floatButton} >
-                <Image 
-                 resizeMode="contain" 
-                 source={Hogwarts} 
-                 style={{width: 100,height: 100}} 
-                />
-            </TouchableOpacity>
+                <Animated.View style={[styles.ravenclaw, ravenclawAnimation, balanceAnimation]}>
+                    <TouchableOpacity onPress={() => onConfirm("ravenclaw")}>
+                        <Image 
+                        resizeMode="contain" 
+                        source={Ravenclaw} 
+                        style={{width: 100,height: 100}} 
+                        />
+                    </TouchableOpacity>
+                </Animated.View>
+
+                <Animated.View style={[styles.hufflepuff, hufflepuffAnimation, balanceAnimation]}>
+                    <TouchableOpacity onPress={() => onConfirm("Hufflepuff")}>
+                        <Image 
+                        resizeMode="contain" 
+                        source={Hufflepuff} 
+                        style={{width: 100,height: 100}} 
+                        />
+                    </TouchableOpacity>
+                </Animated.View>
             
+                <TouchableOpacity activeOpacity={1} onPress={openOptions} style={styles.floatButton} >
+                    <Image 
+                    resizeMode="contain" 
+                    source={Hogwarts} 
+                    style={{width: 100,height: 100}} 
+                    />
+                </TouchableOpacity>                
+            </Animated.View>
+            </PanGestureHandler>
         </View>
     )
 }

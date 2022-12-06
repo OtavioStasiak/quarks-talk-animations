@@ -17,7 +17,7 @@ export const QuestionContext = createContext({} as QuestionContextData);
 function QuestionProvider({ children }: QuestionProviderProps) {
     
     const validateFirstQuestion = useCallback((list: any[]) => {
-        const isCorrect = list.some((item: any) => item.id === 3 || item.id === 5) === false;
+        const isCorrect = list.some((item: any) => item.id === 3 || item.id === 5) === false && list.length === 4;
         return isCorrect;
     }, []);
 
