@@ -10,6 +10,7 @@ import { forthQuestionData } from "../../database/list";
 import { useQuestions } from "../../hooks";
 import { Audio } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 
 
@@ -51,7 +52,7 @@ export function BottomSheet(){
         const earthquake = vecnaValue.value === 1 ? 0 : 1;
         sound.current.setPositionAsync(0);
         sound.current.playAsync();
-        vecnaValue.value = withTiming(value, {duration: 5800});
+        vecnaValue.value = withTiming(value, {duration: 4800});
         earthquakeValue.value = withRepeat(withTiming(earthquake, {duration: 170}), 30);
         
     };
@@ -82,6 +83,7 @@ export function BottomSheet(){
 
     return(
         <View style={styles.container}>
+            <StatusBar style="light" />
             <Animated.Image 
              source={Vecna} 
              style={[{width:390, height: 378, marginBottom: 1, position: "absolute"}, vecnaStyle]} 
