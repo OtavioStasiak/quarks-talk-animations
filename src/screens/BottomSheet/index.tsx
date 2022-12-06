@@ -1,18 +1,30 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, TouchableOpacity, View, Text } from "react-native";
 import UpsideDown from "../../../assets/upsidedown.png";
+import Vecna from "../../../assets/vecna.jpg";
 import Team from "../../../assets/team.png";
 import { styles } from "./styles";
 import LottieView from 'lottie-react-native';
-import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withRepeat, withSpring, withTiming } from "react-native-reanimated";
 import { forthQuestionData } from "../../database/list";
 import { useQuestions } from "../../hooks";
+import { Audio } from "expo-av";
+
+
 
 export function BottomSheet(){
     const { validateForthQuestion } = useQuestions();
     const animatedValue = useSharedValue(0);
     const [opened, setOpened] = useState(false);
-    const lightningRef = useRef<any>(null);
+
+    const sound = React.useRef(new Audio.Sound());
+
+    async function loadAudio(){
+        const load = await sound.current.loadAsync(require("../../../assets/vecna.mp3"))
+    }
+    useEffect(() => {
+        loadAudio();
+    }, []);
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
@@ -31,16 +43,48 @@ export function BottomSheet(){
             
             return;
         };
+        const value = vecnaValue.value === 1 ? 0 : 1;
+        const earthquake = vecnaValue.value === 1 ? 0 : 1;
+        sound.current.setPositionAsync(0);
+        sound.current.playAsync();
+        vecnaValue.value = withTiming(value, {duration: 5800});
+        earthquakeValue.value = withRepeat(withTiming(earthquake, {duration: 170}), 30);
         
     };
 
+    const vecnaValue = useSharedValue(0);
+
+    const vecnaStyle = useAnimatedStyle(() => {
+        return{
+            opacity: interpolate(vecnaValue.value, 
+                [0, .3, .8, 1],
+                [0, 1, 1, 0]
+            )
+        }
+    });
+
+    const earthquakeValue = useSharedValue(0);
+
+    const earthquakeStyle = useAnimatedStyle(() => {
+        return{
+           left: interpolate(earthquakeValue.value,
+                [0, .3, .6, 1],
+                [0 , 5, -5, 0 ]
+            )
+        }
+    });
 
 
 
     return(
         <View style={styles.container}>
-            <Image source={Team} style={{width:350, height: 240, marginTop: "40%"}} />
-           
+            <Animated.Image 
+             source={Vecna} 
+             style={[{width:390, height: 378, marginBottom: 1, position: "absolute"}, vecnaStyle]} 
+             />
+          
+            <Animated.Image source={Team} style={[earthquakeStyle, {width:350, height: 230, marginTop: "40%"}]} />
+
             {   
                 !opened &&
                 <>
